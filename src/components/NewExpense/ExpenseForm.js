@@ -2,45 +2,63 @@ import React, { useState } from "react";
 import "./ExpenseForm.css";
 
 const ExpenseForm = () => {
-  // const [enteredTitle, setEnteredTitle] = useState(""); // currentStateValue, functiojn to update value
-  // const [enteredAmount, setEnteredAmount] = useState("");
-  // const [enteredDate, setEnteredDate] = useState(""); // onChange value by default always string
-  const [userInput, setUserInput] = useState({
-    enteredTitle: "",
-    enteredAmount: "",
-    enteredDate: "",
-  });
+  const [enteredTitle, setEnteredTitle] = useState(""); // currentStateValue, functiojn to update value
+  const [enteredAmount, setEnteredAmount] = useState("");
+  const [enteredDate, setEnteredDate] = useState(""); // onChange value by default always string
+  // const [userInput, setUserInput] = useState({
+  //   enteredTitle: "",
+  //   enteredAmount: "",
+  //   enteredDate: "",
+  // });
 
   const titleChangeHandler = (event) => {
     // event automatically gives us event obejct
-    // setEnteredTitle(event.target.value);
-    setUserInput({
-      ...userInput, // ensures the other values aren't thrown away, but also part of the new state
-      enteredTitle: event.target.value,
-    });
+    setEnteredTitle(event.target.value);
+
+    // setUserInput((prevState) => {
+    //   return { ...prevState, enteredTitle: event.target.value };
+    // });
   };
 
   const amountChangeHandler = (event) => {
     // event automatically gives us event obejct
-    setUserInput({
-      ...userInput,
-      enteredAmount: event.target.value,
-    });
+    setEnteredAmount(event.target.value);
+    // setUserInput((prevState) => {
+    //   return { ...prevState, enteredAmount: event.target.value };
+    // });
   };
 
   const dateChangeHandler = (event) => {
-    setUserInput({
-      ...userInput,
-      enteredDate: event.target.value,
-    });
+    setEnteredDate(event.target.value);
+    // setUserInput((prevState) => {
+    //   return { ...prevState, enteredDate: event.target.value };
+    // });
+  };
+
+  const submitHandler = (event) => {
+    event.preventDefault(); // built into JS, prevent default of the request being sent, so page won't reload automatically
+
+    const expenseData = {
+      title: enteredTitle,
+      amount: enteredAmount,
+      date: new Date(enteredDate),
+    };
+    console.log(expenseData);
+    setEnteredTitle("");
+    setEnteredAmount("");
+    setEnteredDate("");
   };
 
   return (
-    <form>
+    <form onSubmit={submitHandler}>
       <div className="new-expense__controls">
         <div className="new-expense__control">
           <label>Title</label>
-          <input type="text" onChange={titleChangeHandler} />
+          <input
+            type="text"
+            value={enteredTitle}
+            onChange={titleChangeHandler}
+          />
         </div>
         <div className="new-expense__control">
           <label>Amount</label>
@@ -48,6 +66,7 @@ const ExpenseForm = () => {
             type="number"
             min="0.01"
             step="0.01"
+            value={enteredAmount}
             onChange={amountChangeHandler}
           />
         </div>
@@ -57,6 +76,7 @@ const ExpenseForm = () => {
             type="date"
             min="2019-01-01"
             max="2022-12-31"
+            value={enteredDate}
             onChange={dateChangeHandler}
           />
         </div>
